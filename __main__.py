@@ -37,7 +37,8 @@ def main():
     display_main_title()
     choice = display_home_menu_and_retrieve_user_choice()
     if choice == "1":
-        user.register()
+        user_created = user.register()
+
     elif choice == "2":
         user.authenticate()
     elif choice == "3":

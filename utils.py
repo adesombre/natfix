@@ -1,6 +1,7 @@
 import re
+import csv
 
-existing_email_adresses = {"alain@sfr.fr", "franck@free.fr"}
+
 existing_country = [
     "Italie",
     "Angleterre",
@@ -38,7 +39,7 @@ existing_country = [
     "Tchéquie",
     "Turquie",
 ]
-user = {}
+
 
 
 def is_a_valid_email(email):
@@ -49,4 +50,9 @@ def is_a_valid_email(email):
 
 
 if __name__ == "__main__":
-    print(is_a_valid_email("alain"))
+    print(is_a_valid_email("alain@gmail.com"))
+    with open('user.csv','r') as f:
+        reader=csv.reader(f)
+        for ligne in reader:
+
+            print(ligne)

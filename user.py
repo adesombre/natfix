@@ -1,7 +1,27 @@
-import datetime,sys
+import datetime, csv
 import utils
 from utils import existing_country
 
+
+
+existing_users = []
+user={}
+with open('user.csv', 'r') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        existing_users.append(
+            {
+                'name': row[0],
+                'email':row[1],
+                'age': row[2],
+                'pay': row[3],
+                'subscription': row[4],
+                'password': row[5],
+            })
+print(existing_users )
+existing_email_adresses = set()
+for user in existing_users:
+    existing_email_adresses.add(user['email'])
 
 def register():
     print("Processus d'inscription")
@@ -18,7 +38,7 @@ def register():
         if email.strip() == "" or utils.is_a_valid_email(email) == False:
             print("l'email ne peut pas etre vide et  invalide")
             email = None
-        if email in utils.existing_email_adresses:
+        if email in existing_email_adresses:
             print("cette adresse mail existe deja!!")
             email = None
     birth_year = None
@@ -50,7 +70,7 @@ def register():
             print("veuiller avoir plus de 8 caracteres por votre mot de passe")
             password = None
     print(f"{name=}, {email=},{age=} ans ,{country=} , {subscription=} ,{password=}")
-    utils.user = {
+    user = {
         "name": name,
         "email": email,
         "age": age,
@@ -58,11 +78,31 @@ def register():
         "subscription": int(subscription),
         "password": password,
     }
-    return utils.user
+    with open("user.csv", "a") as f:
+        writer=csv.writer(f)
+        writer.writerow([name,email,age,country,subscription,password])
+    return user
 
-# with open("user.txt", "w") as fichier:
-#     fichier.write(utils.user)
 
+#     fichier.write(utils.use
 
 def authenticate():
     print("processus d'authentification")
+    email = None
+    while email is None:
+        email = input("Entrer votre mail :").lower()
+
+        if email.strip() == "" or utils.is_a_valid_email(email) == False:
+            print("l'email ne peut pas etre vide et  invalide")
+            email = None
+            continue
+        if email not in existing_email_adresses:
+            print("cette adresse mail n\'existe pas!!")
+            email = None
+
+    password = None
+    while password is None:
+        password = input("Entrer votre mot de passe (min 8 caracteres ) :")
+        if len(password) < 8 or password.strip() == "":
+            print("veuiller avoir plus de 8 caracteres por votre mot de passe")
+            password = None
